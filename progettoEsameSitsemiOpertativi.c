@@ -59,5 +59,28 @@ int main(int argc, char *argv[] ){
 
     while(1){
     }
-    
+}
+
+void *agenteA(void *a){
+    while(1){
+        sem_wait(&sem_agente);
+        sem_post(&sem_tabacco);
+        sem_post(&sem_carta);
+    }
+}
+
+void *agenteB(void *b){
+    while(1){
+        sem_wait(&sem_agente);
+        sem_post(&sem_tabacco);
+        sem_post(&sem_fiammifero);
+    }
+}
+
+void *agenteC(void *c){
+    while(1){
+        sem_wait(&sem_agente);
+        sem_post(&sem_carta);
+        sem_post(&sem_fiammifero);
+    }
 }
