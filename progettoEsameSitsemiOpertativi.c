@@ -145,3 +145,67 @@ void *fumatore3(void *c){
 		sleep(4);
 	}
 }
+
+void *pusherA(void *a){
+    while(1){
+            sem_wait(&sem_tabacco);
+            pthread_mutex_lock(&print_mutex);
+            printf("Il tabacco è sul tavolo.\n");
+            pthread_mutex_unlock(&print_mutex);
+
+            sem_wait(&sem_mutex);
+                if(cartaLibera){
+                    cartaLibera = false;
+                    sem_post(&carta);
+                }else if(fiammiferoLibero){
+                    fiammiferoLibero = false;
+                    sem_post(&fiammifero);
+                }else{
+                    tabaccoLibero = true;
+                }
+            sem_post(&sem_mutex);
+    }
+}
+
+
+void *pusherB(void *b){
+    while(1){
+        sem_wait(&sem_fiammifero);
+        pthread_mutex_lock(&print_mutex);
+        printf("I fiammiferi sono sul tavolo.\n");
+        pthread_mutex_unlock(&print_mutex);
+
+        sem_wait(&sem_mutex);
+            if(cartaLibera){
+                cartaLibera = false;
+                sem_post(&fiammifero);
+            }else if(tabaccoLibero){
+                tabaccoLibero = false;
+                sem_post(&tabacco);
+            }else{
+                fiammiferoLibero = true;
+            }
+        sem_post(&sem_mutex);
+    }
+}
+
+void *pusherC(void *c){
+    while(1){
+        sem_wait(&sem_carta);
+        pthread_mutex_lock(&print_mutex);
+        printf("Le cartine sono sul tavolo.\n");
+        pthread_mutex_unlock(&print_mutex);
+
+        sem_wait(&sem_mutex);
+            if(tabaccoLibero){
+                tabaccoLibero = false;
+                sem_post(&tabacco);
+            }else if(fiammiferoLibero){
+                fiammiferoLibero = false;
+                sem_post(&fiammifero);
+            }else{
+                cartaLibera = true;
+            }
+        sem_post(&sem_mutex);
+    }
+}
