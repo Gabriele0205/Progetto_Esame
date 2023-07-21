@@ -84,3 +84,64 @@ void *agenteC(void *c){
         sem_post(&sem_fiammifero);
     }
 }
+
+void *fumatore1(void *a){
+	while(1){
+		pthread_mutex_lock(&print_mutex);
+		printf("S1 ha bisogno di tabacco\n");
+		pthread_mutex_unlock(&print_mutex);
+		
+		sem_wait(&tabacco);
+
+		pthread_mutex_lock(&print_mutex);
+		printf("S1 ottiene il tabacco e si arrotola una sigaretta \n");
+		pthread_mutex_unlock(&print_mutex);
+		
+		sem_post(&sem_agente);
+
+		pthread_mutex_lock(&print_mutex);
+		printf("S1 ne arrotola una e fa cadere il tabacco\n" );
+		pthread_mutex_unlock(&print_mutex);
+		sleep(4);
+	}
+}
+
+void *fumatore2(void *b){
+	while(1){
+		pthread_mutex_lock(&print_mutex);
+		printf("S2 ha bisogno di carta\n");
+		pthread_mutex_unlock(&print_mutex);
+
+		sem_wait(&carta);
+
+		pthread_mutex_lock(&print_mutex);
+		printf("S2 ottiene la carta,arrotola una sigaretta\n");
+		pthread_mutex_unlock(&print_mutex);
+
+		sem_post(&sem_agente);
+		pthread_mutex_lock(&print_mutex);
+		printf("S2 ne arroltola una e fa cadere le cartine\n" );
+		pthread_mutex_unlock(&print_mutex);
+		sleep(4);
+	}
+}
+
+void *fumatore3(void *c){
+	while(1){
+		pthread_mutex_lock(&print_mutex);
+		printf("S3 ha bisogno dei fiammiferi\n");
+		pthread_mutex_unlock(&print_mutex);
+
+		sem_wait(&fiammifero);
+		pthread_mutex_lock(&print_mutex);
+		printf("S3 ottiene i fiammiferi e arrotola una sigaretta \n");
+		pthread_mutex_unlock(&print_mutex);
+		sem_post(&sem_agente);
+
+		pthread_mutex_lock(&print_mutex);
+		printf("S3 ne arrotola una e fa cadere i fiammiferi \n" );
+		pthread_mutex_unlock(&print_mutex);
+
+		sleep(4);
+	}
+}
