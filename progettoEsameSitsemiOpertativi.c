@@ -44,6 +44,20 @@ int main(int argc, char *argv[] ){
     sem_init(&carta, 0, 0);
     sem_init(&fiammifero, 0, 0);  
     sem_init(&sem_mutex, 0, 1);
+ 
+ 	
+ 	/* ****modifica dei valori con cui vengono inizializzati i semafori
+ 		   in modo da far andare in stallo il processo**** 
+	sem_init(&sem_agente, 0, 0);
+    sem_init(&sem_tabacco, 0, 1);
+    sem_init(&sem_carta, 0, 1);
+    sem_init(&sem_fiammifero, 0, 1);
+    sem_init(&tabacco, 0, 1);
+    sem_init(&carta, 0, 1);
+    sem_init(&fiammifero, 0, 1);  
+    sem_init(&sem_mutex, 0, 0);
+    */
+
     pthread_mutex_init(&print_mutex, NULL);
 
     //creazione thread
